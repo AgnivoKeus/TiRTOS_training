@@ -38,7 +38,8 @@
 /* XDC Module Headers */
 #include <xdc/std.h>
 #include <xdc/runtime/System.h>
-
+#include <xdc/runtime/Error.h>
+#include <ti/sysbios/hal/Hwi.h>
 /* BIOS Module Headers */
 #include <ti/sysbios/BIOS.h>
 
@@ -47,13 +48,35 @@
 #include<ti/drivers/GPIO.h>
 #include"ti_drivers_config.h"
 
+#include DeviceFamily_constructPath(driverlib/timer.h)
+
 /*
  *  ======== main ========
  */
 
+#define  _K_TIMER_ALL_INTS  (TIMER_TIMB_DMA | \
+                             TIMER_TIMB_MATCH |   \
+                             TIMER_CAPB_EVENT |   \
+                             TIMER_CAPB_MATCH |   \
+                             TIMER_TIMB_TIMEOUT | \
+                             TIMER_TIMA_DMA | \
+                             TIMER_TIMA_MATCH |   \
+                             TIMER_CAPA_EVENT |   \
+                             TIMER_CAPA_MATCH |   \
+                             TIMER_TIMA_TIMEOUT)
 
-void timerISR(Timer_Handle tHandle, int_fast16_t status){
+void timerISR(UArg arg){
+    //printf("ISR called!\n");
+    TimerIntClear(GPT1_BASE, _K_TIMER_ALL_INTS);
+    Hwi_clearInterrupt(33);
+    IntPendClear(33);
     GPIO_toggle(CONFIG_GPIO_LED1);
+}
+
+void timerISR2(Timer_Handle tHandle, int_fast16_t status){
+
+    //printf("ISR 2 called\n");
+    GPIO_toggle(CONFIG_GPIO_1);
 }
 
 int main()
@@ -61,25 +84,55 @@ int main()
     /* Call driver init functions */
     Board_init();
 
+    Hwi_Handle myHwi;
+    Hwi_Params hParams;
+    Error_Block eb;
+
     Timer_Handle tHandle;
+    Timer_Handle t2Handle;
     Timer_Params tParams;
-    int_fast16_t status;
+    int_fast16_t tStatus;
+    int_fast16_t t2Status;
+
+    Error_init(&eb);
+    Hwi_Params_init(&hParams);
+    hParams.enableInt = false;
+    hParams.priority = 0;
+    myHwi = Hwi_create(33, timerISR, &hParams, &eb);
+
+    if (myHwi == NULL) {
+    System_abort("Hwi create failed");
+    }
+
+    Hwi_enable();
+    Hwi_enableInterrupt(33);
 
     Timer_Params_init(&tParams);
-    tParams.periodUnits = Timer_PERIOD_US;
-    tParams.period = 300000;
     tParams.timerMode = Timer_CONTINUOUS_CALLBACK;
-    tParams.timerCallback = &timerISR;
+    tParams.periodUnits = Timer_PERIOD_US;
+    tParams.period = 300;
+    tParams.timerCallback = timerISR2;
 
-    tHandle = Timer_open(timer0, &tParams);
+    tHandle = Timer_open(timer0,&tParams);
     if(tHandle == NULL){
-        printf("Error in opening timer!\n");
+        printf("Error opening timer instance. \n");
         while(1){}
     }
 
-    status = Timer_start(tHandle);
-    if(status == Timer_STATUS_ERROR){
-        printf("Timer start error!\n");
+    t2Handle = Timer_open(timer1, &tParams);
+    if(t2Handle == NULL){
+        printf("Error opening timer instance. \n");
+        while(1){}
+    }
+
+    tStatus = Timer_start(tHandle);
+    if(tStatus == Timer_STATUS_ERROR){
+        printf("Error starting timer\n");
+    }
+
+    t2Status = Timer_start(t2Handle);
+    if(t2Status == Timer_STATUS_ERROR){
+        printf("Error starting timer\n");
     }
     /*
      *  normal BIOS programs, would call BIOS_start() to enable interrupts

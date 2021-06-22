@@ -45,7 +45,10 @@ extern "C" {
 /* DIO7, LaunchPad LED Green */
 extern const uint_least8_t              CONFIG_GPIO_LED1_CONST;
 #define CONFIG_GPIO_LED1                0
-#define CONFIG_TI_DRIVERS_GPIO_COUNT    1
+/* DIO6, LaunchPad LED Red */
+extern const uint_least8_t              CONFIG_GPIO_1_CONST;
+#define CONFIG_GPIO_1                   1
+#define CONFIG_TI_DRIVERS_GPIO_COUNT    2
 
 /* LEDs are active high */
 #define CONFIG_GPIO_LED_ON  (1)
@@ -64,7 +67,9 @@ extern const PIN_Config BoardGpioInitTable[];
 
 /* LaunchPad LED Green, Parent Signal: CONFIG_GPIO_LED1 GPIO Pin, (DIO7) */
 #define CONFIG_PIN_0                   0x00000007
-#define CONFIG_TI_DRIVERS_PIN_COUNT    1
+/* LaunchPad LED Red, Parent Signal: CONFIG_GPIO_1 GPIO Pin, (DIO6) */
+#define CONFIG_PIN_1                   0x00000006
+#define CONFIG_TI_DRIVERS_PIN_COUNT    2
 
 
 /*
@@ -73,7 +78,9 @@ extern const PIN_Config BoardGpioInitTable[];
 
 extern const uint_least8_t                  timer0_CONST;
 #define timer0                              0
-#define CONFIG_TI_DRIVERS_TIMER_COUNT       1
+extern const uint_least8_t                  timer1_CONST;
+#define timer1                              1
+#define CONFIG_TI_DRIVERS_TIMER_COUNT       2
 
 
 /*
@@ -82,7 +89,9 @@ extern const uint_least8_t                  timer0_CONST;
 
 extern const uint_least8_t                  CONFIG_GPTIMER_0_CONST;
 #define CONFIG_GPTIMER_0                    0
-#define CONFIG_TI_DRIVERS_GPTIMER_COUNT     1
+extern const uint_least8_t                  CONFIG_GPTIMER_1_CONST;
+#define CONFIG_GPTIMER_1                    1
+#define CONFIG_TI_DRIVERS_GPTIMER_COUNT     2
 
 
 /*
