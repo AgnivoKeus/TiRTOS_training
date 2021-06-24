@@ -48,7 +48,7 @@
 
 #include"ti_drivers_config.h"
 #include <ti/sysbios/knl/Task.h>
-
+#include <ti/sysbios/knl/Semaphore.h>
 //#include DeviceFamily_constructPath(driverlib/timer.h)
 
 /*
@@ -65,6 +65,8 @@ UART_Params uartParams;
 Task_Params taskParams;
 Task_Handle taskHandle;
 
+Semaphore_Handle semHandle;
+Semaphore_Params semParams;
 
 char taskStack[512];
 uint8_t input = 0;
@@ -90,26 +92,10 @@ void uartCallBack(UART_Handle handle, void *buf, size_t count){
 //global gpioState
 void gpioCallBackFxn(uint_least8_t index){
     printf("GPIO callback!\n");
-    //sempahirepost gpio
+    Semaphore_post(semHandle);
+
     // gpioState
-    if(input!=0){
-        pwmPrevVal = input;
 
-        UART_write(uartHandle, &input, 1);
-//        UART_write(uartHandle, '\n', 1);
-        UART_write(uartHandle, &pwmPrevVal, 1);
-
-        input = 0;
-        PWM_setDuty(pwmHandle, (uint32_t) (((uint64_t) PWM_DUTY_FRACTION_MAX * input / 100)));
-    }
-    else{
-        UART_write(uartHandle, &input, 1);
-//        UART_write(uartHandle, '\n', 1);
-        UART_write(uartHandle, &pwmPrevVal, 1);
-
-        input = pwmPrevVal;
-        PWM_setDuty(pwmHandle, (uint32_t) (((uint64_t) PWM_DUTY_FRACTION_MAX * input / 100)));
-    }
 }
 void UARTinit(){
     UART_init();
@@ -157,6 +143,21 @@ void myTaskFxn(xdc_UArg arg1, xdc_UArg arg2){
     UARTinit();
     GPIOinit();
 
+    //create semaphore counting
+
+    Semaphore_Params_init(&semParams);
+    semParams.mode = ti_sysbios_knl_Semaphore_Mode_COUNTING;
+    semParams.event = NULL;
+
+    semHandle = Semaphore_create(0, &semParams, NULL);
+
+//    appSemHandle = Semaphore_handle(&appSem);
+
+//    appServiceTaskId = OsalPort_registerTask(Task_self(), appSemHandle,
+//                                            &appServiceTaskEvents);
+
+//    Semaphore_create(1, &semParams, NULL);
+
     //create an eventMask with different bits for different action
    /*
     * 0x01 -> read uart
@@ -164,9 +165,10 @@ void myTaskFxn(xdc_UArg arg1, xdc_UArg arg2){
     * 0x04 -> update pwm
     * 0x08 -> gpio toggle
     * */
-    */
 
-    //create semaphore counting
+    input = 80;
+    PWM_setDuty(pwmHandle, (uint32_t) (((uint64_t) PWM_DUTY_FRACTION_MAX * input / 100)));
+
     while(1){
 
         //pend on semaphore
@@ -175,14 +177,34 @@ void myTaskFxn(xdc_UArg arg1, xdc_UArg arg2){
         // readuart
         //
 
-        UART_read(uartHandle, &input, 1);
-        UART_write(uartHandle, &input, 1);
-        PWM_setDuty(pwmHandle, (uint32_t) (((uint64_t) PWM_DUTY_FRACTION_MAX * input / 100)));
+//        UART_read(uartHandle, &input, 1);
+//        UART_write(uartHandle, &input, 1);
+
+        Semaphore_pend(semHandle, BIOS_WAIT_FOREVER);
+        if(input!=0){ //if pem!= 0, set to zero
+                pwmPrevVal = input;
+
+                UART_write(uartHandle, &input, 1);
+        //        UART_write(uartHandle, '\n', 1);
+                UART_write(uartHandle, &pwmPrevVal, 1);
+
+                input = 0;
+                PWM_setDuty(pwmHandle, (uint32_t) (((uint64_t) PWM_DUTY_FRACTION_MAX * input / 100)));
+            }
+            else{ //if zero, then restore previous value
+                UART_write(uartHandle, &input, 1);
+        //        UART_write(uartHandle, '\n', 1);
+                UART_write(uartHandle, &pwmPrevVal, 1);
+
+                input = pwmPrevVal;
+                PWM_setDuty(pwmHandle, (uint32_t) (((uint64_t) PWM_DUTY_FRACTION_MAX * input / 100)));
+            }
+//        Semaphore_post(semHandle);
     }
 }
 
 int main()
-{
+    {
     /* Call driver init functions */
     Board_init();
 

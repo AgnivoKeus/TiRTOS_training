@@ -175,6 +175,28 @@ hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Types.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/interfaces/ITaskSupport.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Task__epilogue.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/package/Task_SupportProxy.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Semaphore.h
+hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Types.h
+hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/IInstance.h
+hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Diags.h
+hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Log.h
+hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Assert.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Queue.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Task.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Clock.h
+hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/IModule.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Event.h
+hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Types.h
+hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/IInstance.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Event__prologue.h
+hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Assert.h
+hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Diags.h
+hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Log.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Queue.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Clock.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Task.h
+hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/IModule.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Event__epilogue.h
 
 ../hello.c:
 
@@ -525,4 +547,48 @@ C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/in
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Task__epilogue.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/package/Task_SupportProxy.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Semaphore.h:
+
+C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Types.h:
+
+C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/IInstance.h:
+
+C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Diags.h:
+
+C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Log.h:
+
+C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Assert.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Queue.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Task.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Clock.h:
+
+C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/IModule.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Event.h:
+
+C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Types.h:
+
+C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/IInstance.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Event__prologue.h:
+
+C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Assert.h:
+
+C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Diags.h:
+
+C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Log.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Queue.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Clock.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Task.h:
+
+C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/IModule.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Event__epilogue.h:
 
