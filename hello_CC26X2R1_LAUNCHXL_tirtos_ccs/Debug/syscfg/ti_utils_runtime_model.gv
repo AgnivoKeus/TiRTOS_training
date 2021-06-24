@@ -18,12 +18,16 @@ digraph Model
     // mod.$name=/ti/drivers/GPIO
     ti_drivers_GPIO -> ti_drivers_Power
     ti_drivers_GPIO -> ti_drivers_Board
-    CONFIG_GPIO_LED1 -> CONFIG_PIN_0
-    CONFIG_GPIO_1 -> CONFIG_PIN_1
+    BUTTON0 -> CONFIG_PIN_3
 
     // mod.$name=/ti/drivers/PIN
     ti_drivers_PIN -> ti_drivers_Power
     ti_drivers_PIN -> ti_drivers_Board
+
+    // mod.$name=/ti/drivers/PWM
+    CONFIG_PWM_0 -> ti_drivers_Power
+    CONFIG_PWM_0 -> ti_drivers_Board
+    CONFIG_PWM_0 -> CONFIG_GPTIMER_2
 
     // mod.$name=/ti/drivers/Power
     ti_drivers_Power -> ti_devices_CCFG
@@ -31,17 +35,14 @@ digraph Model
 
     // mod.$name=/ti/drivers/RTOS
 
-    // mod.$name=/ti/drivers/Timer
-    timer0 -> ti_drivers_Power
-    timer0 -> ti_drivers_Board
-    timer1 -> ti_drivers_Power
-    timer1 -> ti_drivers_Board
-    timer0 -> CONFIG_GPTIMER_0
-    timer1 -> CONFIG_GPTIMER_1
+    // mod.$name=/ti/drivers/UART
+    CONFIG_UART_0 -> ti_drivers_Power
+    CONFIG_UART_0 -> ti_drivers_Board
+    CONFIG_UART_0 -> CONFIG_PIN_1
+    CONFIG_UART_0 -> CONFIG_PIN_2
 
     // mod.$name=/ti/drivers/timer/GPTimerCC26XX
-    CONFIG_GPTIMER_0 -> ti_drivers_Power
-    CONFIG_GPTIMER_0 -> ti_drivers_Board
-    CONFIG_GPTIMER_1 -> ti_drivers_Power
-    CONFIG_GPTIMER_1 -> ti_drivers_Board
+    CONFIG_GPTIMER_2 -> ti_drivers_Power
+    CONFIG_GPTIMER_2 -> ti_drivers_Board
+    CONFIG_GPTIMER_2 -> CONFIG_PIN_0
 }

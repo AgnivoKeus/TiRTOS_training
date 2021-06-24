@@ -38,45 +38,147 @@
 /* XDC Module Headers */
 #include <xdc/std.h>
 #include <xdc/runtime/System.h>
-#include <xdc/runtime/Error.h>
-#include <ti/sysbios/hal/Hwi.h>
 /* BIOS Module Headers */
 #include <ti/sysbios/BIOS.h>
 
 #include <ti/drivers/Board.h>
-#include<ti/drivers/Timer.h>
 #include<ti/drivers/GPIO.h>
-#include"ti_drivers_config.h"
+#include<ti/drivers/PWM.h>
+#include <ti/drivers/UART.h>
 
-#include DeviceFamily_constructPath(driverlib/timer.h)
+#include"ti_drivers_config.h"
+#include <ti/sysbios/knl/Task.h>
+
+//#include DeviceFamily_constructPath(driverlib/timer.h)
 
 /*
  *  ======== main ========
  */
 
-#define  _K_TIMER_ALL_INTS  (TIMER_TIMB_DMA | \
-                             TIMER_TIMB_MATCH |   \
-                             TIMER_CAPB_EVENT |   \
-                             TIMER_CAPB_MATCH |   \
-                             TIMER_TIMB_TIMEOUT | \
-                             TIMER_TIMA_DMA | \
-                             TIMER_TIMA_MATCH |   \
-                             TIMER_CAPA_EVENT |   \
-                             TIMER_CAPA_MATCH |   \
-                             TIMER_TIMA_TIMEOUT)
 
-void timerISR(UArg arg){
-    //printf("ISR called!\n");
-    TimerIntClear(GPT1_BASE, _K_TIMER_ALL_INTS);
-    Hwi_clearInterrupt(33);
-    IntPendClear(33);
-    GPIO_toggle(CONFIG_GPIO_LED1);
+PWM_Handle pwmHandle;
+PWM_Params pwmParams;
+
+UART_Handle uartHandle;
+UART_Params uartParams;
+
+Task_Params taskParams;
+Task_Handle taskHandle;
+
+
+char taskStack[512];
+uint8_t input = 0;
+uint8_t pwmPrevVal = 0;
+
+void uartWriteCallBack(UART_Handle handle, void *buf, size_t count){
+    UART_read(uartHandle, &input, 1);
+}
+void uartCallBack(UART_Handle handle, void *buf, size_t count){
+
+    printf("Callback called\n");
+//    const char echoBuffer[] = "Hello from callback";
+//    UART_write(handle, echoBuffer, sizeof(echoBuffer));
+    UART_write(handle, buf, 1);
+//    uint8_t val = *((uint8_t *)buf);
+//    size_t bytesWritten;
+//    printf("received value: %hu\n", val);
+//    PWM_setDuty(userArg, val);
+//
+//    UART2_write(handle, buf, count, &bytesWritten);
 }
 
-void timerISR2(Timer_Handle tHandle, int_fast16_t status){
+//global gpioState
+void gpioCallBackFxn(uint_least8_t index){
+    printf("GPIO callback!\n");
+    //sempahirepost gpio
+    // gpioState
+    if(input!=0){
+        pwmPrevVal = input;
 
-    //printf("ISR 2 called\n");
-    GPIO_toggle(CONFIG_GPIO_1);
+        UART_write(uartHandle, &input, 1);
+//        UART_write(uartHandle, '\n', 1);
+        UART_write(uartHandle, &pwmPrevVal, 1);
+
+        input = 0;
+        PWM_setDuty(pwmHandle, (uint32_t) (((uint64_t) PWM_DUTY_FRACTION_MAX * input / 100)));
+    }
+    else{
+        UART_write(uartHandle, &input, 1);
+//        UART_write(uartHandle, '\n', 1);
+        UART_write(uartHandle, &pwmPrevVal, 1);
+
+        input = pwmPrevVal;
+        PWM_setDuty(pwmHandle, (uint32_t) (((uint64_t) PWM_DUTY_FRACTION_MAX * input / 100)));
+    }
+}
+void UARTinit(){
+    UART_init();
+    UART_Params_init(&uartParams);
+    uartParams.baudRate = 115200;
+    uartParams.readDataMode = UART_DATA_BINARY;
+    uartParams.writeDataMode = UART_DATA_BINARY;
+    uartParams.readReturnMode = UART_RETURN_FULL;
+
+//    uartParams.readMode = UART_MODE_BLOCKING;
+
+    uartHandle = UART_open(CONFIG_UART_0, &uartParams);
+    if(uartHandle == NULL){
+        printf("Uart open failed!\n");
+        while(1);
+    }
+}
+
+void PWMinit(){
+    PWM_init();
+    PWM_Params_init(&pwmParams);
+    pwmParams.dutyValue = 0;
+    pwmParams.dutyUnits = PWM_DUTY_FRACTION;
+    pwmParams.periodUnits = PWM_PERIOD_US;
+    pwmParams.periodValue = 30000;
+    pwmParams.idleLevel = PWM_IDLE_LOW;
+
+    pwmHandle = PWM_open(CONFIG_PWM_0, &pwmParams);
+    if(pwmHandle == NULL){
+        printf("Error opening PWM o/p\n");
+        while(1){}
+    }
+    PWM_start(pwmHandle);
+}
+
+void GPIOinit(){
+    GPIO_init();
+    GPIO_setCallback(BUTTON0,gpioCallBackFxn);
+    GPIO_enableInt(BUTTON0);
+
+}
+void myTaskFxn(xdc_UArg arg1, xdc_UArg arg2){
+    printf("Task started\n");
+    PWMinit();
+    UARTinit();
+    GPIOinit();
+
+    //create an eventMask with different bits for different action
+   /*
+    * 0x01 -> read uart
+    * 0x02 -> write uart
+    * 0x04 -> update pwm
+    * 0x08 -> gpio toggle
+    * */
+    */
+
+    //create semaphore counting
+    while(1){
+
+        //pend on semaphore
+
+        //if(events & 0x01)
+        // readuart
+        //
+
+        UART_read(uartHandle, &input, 1);
+        UART_write(uartHandle, &input, 1);
+        PWM_setDuty(pwmHandle, (uint32_t) (((uint64_t) PWM_DUTY_FRACTION_MAX * input / 100)));
+    }
 }
 
 int main()
@@ -84,61 +186,11 @@ int main()
     /* Call driver init functions */
     Board_init();
 
-    Hwi_Handle myHwi;
-    Hwi_Params hParams;
-    Error_Block eb;
+    Task_Params_init(&taskParams);
+    taskParams.stack = (void *)taskStack;
+    taskParams.stackSize = sizeof(taskStack);
+    taskHandle = Task_create(&myTaskFxn, &taskParams, NULL);
 
-    Timer_Handle tHandle;
-    Timer_Handle t2Handle;
-    Timer_Params tParams;
-    int_fast16_t tStatus;
-    int_fast16_t t2Status;
-
-    Error_init(&eb);
-    Hwi_Params_init(&hParams);
-    hParams.enableInt = false;
-    hParams.priority = 0;
-    myHwi = Hwi_create(33, timerISR, &hParams, &eb);
-
-    if (myHwi == NULL) {
-    System_abort("Hwi create failed");
-    }
-
-    Hwi_enable();
-    Hwi_enableInterrupt(33);
-
-    Timer_Params_init(&tParams);
-    tParams.timerMode = Timer_CONTINUOUS_CALLBACK;
-    tParams.periodUnits = Timer_PERIOD_US;
-    tParams.period = 300;
-    tParams.timerCallback = timerISR2;
-
-    tHandle = Timer_open(timer0,&tParams);
-    if(tHandle == NULL){
-        printf("Error opening timer instance. \n");
-        while(1){}
-    }
-
-    t2Handle = Timer_open(timer1, &tParams);
-    if(t2Handle == NULL){
-        printf("Error opening timer instance. \n");
-        while(1){}
-    }
-
-    tStatus = Timer_start(tHandle);
-    if(tStatus == Timer_STATUS_ERROR){
-        printf("Error starting timer\n");
-    }
-
-    t2Status = Timer_start(t2Handle);
-    if(t2Status == Timer_STATUS_ERROR){
-        printf("Error starting timer\n");
-    }
-    /*
-     *  normal BIOS programs, would call BIOS_start() to enable interrupts
-     *  and start the scheduler and kick BIOS into gear.  But, this program
-     *  is a simple sanity test and calls BIOS_exit() instead.
-     */
     BIOS_start();
     return(0);
 }

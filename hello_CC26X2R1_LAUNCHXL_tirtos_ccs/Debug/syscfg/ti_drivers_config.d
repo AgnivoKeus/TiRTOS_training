@@ -34,20 +34,26 @@ syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/inc/hw_gpio.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/pin/PINCC26XX.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/HwiP.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/PWM.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/pwm/PWMTimerCC26XX.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/timer/GPTimerCC26XX.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/inc/hw_gpt.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/driverlib/event.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/inc/hw_event.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/driverlib/timer.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Power.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/utils/List.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/power/PowerCC26X2.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/ClockP.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/power/PowerCC26XX.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Temperature.h
-syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Timer.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/UART.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/uart/UARTCC26XX.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/utils/RingBuf.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/driverlib/uart.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/inc/hw_uart.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SwiP.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SemaphoreP.h
-syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/timer/TimerCC26XX.h
-syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/timer/GPTimerCC26XX.h
-syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/inc/hw_gpt.h
-syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/driverlib/event.h
-syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/inc/hw_event.h
-syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/driverlib/timer.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Board.h
 
 syscfg/ti_drivers_config.c:
@@ -118,6 +124,20 @@ C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/pin/PINCC26XX.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/HwiP.h:
 
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/PWM.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/pwm/PWMTimerCC26XX.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/timer/GPTimerCC26XX.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/inc/hw_gpt.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/driverlib/event.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/inc/hw_event.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/driverlib/timer.h:
+
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Power.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/utils/List.h:
@@ -130,21 +150,19 @@ C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/power/PowerCC26XX.
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Temperature.h:
 
-C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Timer.h:
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/UART.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/uart/UARTCC26XX.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/utils/RingBuf.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/driverlib/uart.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/inc/hw_uart.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SwiP.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SemaphoreP.h:
-
-C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/timer/TimerCC26XX.h:
-
-C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/timer/GPTimerCC26XX.h:
-
-C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/inc/hw_gpt.h:
-
-C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/driverlib/event.h:
-
-C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/inc/hw_event.h:
-
-C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/driverlib/timer.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Board.h:
 

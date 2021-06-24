@@ -1,3 +1,6 @@
 1624277773007	Delete resource 'hello_CC26X2R1_LAUNCHXL_tirtos_ccs'
 1624351287571	Delete resource 'empty_CC26X2R1_LAUNCHXL_tirtos_ccs'
 1624351295993	Delete resource 'buttonled_CC26X2R1_LAUNCHXL_tirtos_ccs'
+1624352781545	Delete resource 'tirtos_builds_cc13x2_cc26x2_release_ccs'
+1624430256687	Delete resource 'uart2echo_CC26X2R1_LAUNCHXL_tirtos_ccs'
+1624430266392	Delete resource 'uart2callback_CC26X2R1_LAUNCHXL_tirtos_ccs'

@@ -24,17 +24,15 @@
 #include <ti/drivers/GPIO.h>
 #include <ti/drivers/gpio/GPIOCC26XX.h>
 
-#define CONFIG_GPIO_COUNT 2
+#define CONFIG_GPIO_COUNT 1
 
 /*
  *  ======== gpioPinConfigs ========
  *  Array of Pin configurations
  */
 GPIO_PinConfig gpioPinConfigs[] = {
-    /* CONFIG_GPIO_LED1 : LaunchPad LED Green */
-    GPIOCC26XX_DIO_07 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_HIGH,
-    /* CONFIG_GPIO_1 : LaunchPad LED Red */
-    GPIOCC26XX_DIO_06 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_MED | GPIO_CFG_OUT_LOW,
+    /* BUTTON0 : LaunchPad Button BTN-1 (Left) */
+    GPIOCC26XX_DIO_13 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING,
 };
 
 /*
@@ -46,14 +44,11 @@ GPIO_PinConfig gpioPinConfigs[] = {
  *  (GPIO.optimizeCallbackTableSize = true)
  */
 GPIO_CallbackFxn gpioCallbackFunctions[] = {
-    /* CONFIG_GPIO_LED1 : LaunchPad LED Green */
-    NULL,
-    /* CONFIG_GPIO_1 : LaunchPad LED Red */
+    /* BUTTON0 : LaunchPad Button BTN-1 (Left) */
     NULL,
 };
 
-const uint_least8_t CONFIG_GPIO_LED1_CONST = CONFIG_GPIO_LED1;
-const uint_least8_t CONFIG_GPIO_1_CONST = CONFIG_GPIO_1;
+const uint_least8_t BUTTON0_CONST = BUTTON0;
 
 /*
  *  ======== GPIOCC26XX_config ========
@@ -61,8 +56,8 @@ const uint_least8_t CONFIG_GPIO_1_CONST = CONFIG_GPIO_1;
 const GPIOCC26XX_Config GPIOCC26XX_config = {
     .pinConfigs = (GPIO_PinConfig *)gpioPinConfigs,
     .callbacks = (GPIO_CallbackFxn *)gpioCallbackFunctions,
-    .numberOfPinConfigs = 2,
-    .numberOfCallbacks = 2,
+    .numberOfPinConfigs = 1,
+    .numberOfCallbacks = 1,
     .intPriority = (~0)
 };
 
@@ -72,13 +67,17 @@ const GPIOCC26XX_Config GPIOCC26XX_config = {
 #include <ti/drivers/PIN.h>
 #include <ti/drivers/pin/PINCC26XX.h>
 
-#define CONFIG_PIN_COUNT 2
+#define CONFIG_PIN_COUNT 4
 
 const PIN_Config BoardGpioInitTable[CONFIG_PIN_COUNT + 1] = {
-    /* LaunchPad LED Green, Parent Signal: CONFIG_GPIO_LED1 GPIO Pin, (DIO7) */
-    CONFIG_PIN_0 | PIN_GPIO_OUTPUT_EN | PIN_GPIO_HIGH | PIN_PUSHPULL | PIN_DRVSTR_MED,
-    /* LaunchPad LED Red, Parent Signal: CONFIG_GPIO_1 GPIO Pin, (DIO6) */
+    /* LaunchPad Button BTN-1 (Left), Parent Signal: BUTTON0 GPIO Pin, (DIO13) */
+    CONFIG_PIN_3 | PIN_INPUT_EN | PIN_PULLUP | PIN_IRQ_DIS,
+    /* XDS110 UART, Parent Signal: CONFIG_UART_0 TX, (DIO3) */
     CONFIG_PIN_1 | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,
+    /* XDS110 UART, Parent Signal: CONFIG_UART_0 RX, (DIO2) */
+    CONFIG_PIN_2 | PIN_INPUT_EN | PIN_PULLDOWN | PIN_IRQ_DIS,
+    /* LaunchPad LED Red, Parent Signal: CONFIG_GPTIMER_2 PWM Pin, (DIO6) */
+    CONFIG_PIN_0 | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MED,
 
     PIN_TERMINATE
 };
@@ -87,6 +86,53 @@ const PINCC26XX_HWAttrs PINCC26XX_hwAttrs = {
     .intPriority = (~0),
     .swiPriority = 0
 };
+
+/*
+ *  =============================== PWM ===============================
+ */
+
+#include <ti/drivers/PWM.h>
+#include <ti/drivers/pwm/PWMTimerCC26XX.h>
+
+/* include driverlib definitions */
+#include <ti/devices/cc13x2_cc26x2/driverlib/ioc.h>
+#include <ti/devices/cc13x2_cc26x2/inc/hw_ints.h>
+#include <ti/devices/cc13x2_cc26x2/inc/hw_memmap.h>
+
+#define CONFIG_PWM_COUNT 1
+
+/*
+ *  ======== pwmCC26XXObjects ========
+ */
+PWMTimerCC26XX_Object pwmTimerCC26XXObjects[CONFIG_PWM_COUNT];
+
+/*
+ *  ======== pwmCC26XXHWAttrs ========
+ */
+const PWMTimerCC26XX_HwAttrs pwmTimerCC26XXHWAttrs[CONFIG_PWM_COUNT] = {
+    /* CONFIG_PWM_0 */
+    /* LaunchPad LED Red */
+    {
+        .pwmPin = IOID_6,
+        .gpTimerUnit = CONFIG_GPTIMER_2
+    },
+};
+
+/*
+ *  ======== PWM_config ========
+ */
+const PWM_Config PWM_config[CONFIG_PWM_COUNT] = {
+    /* CONFIG_PWM_0 */
+    /* LaunchPad LED Red */
+    {
+        .fxnTablePtr = &PWMTimerCC26XX_fxnTable,
+        .object = &pwmTimerCC26XXObjects[CONFIG_PWM_0],
+        .hwAttrs = &pwmTimerCC26XXHWAttrs[CONFIG_PWM_0]
+    },
+};
+
+const uint_least8_t CONFIG_PWM_0_CONST = CONFIG_PWM_0;
+const uint_least8_t PWM_count = CONFIG_PWM_COUNT;
 
 /*
  *  =============================== Power ===============================
@@ -109,54 +155,51 @@ const PowerCC26X2_Config PowerCC26X2_config = {
 };
 
 /*
- *  =============================== Timer ===============================
+ *  =============================== UART ===============================
  */
 
-#include <ti/drivers/Timer.h>
-#include <ti/drivers/timer/TimerCC26XX.h>
+#include <ti/drivers/UART.h>
+#include <ti/drivers/uart/UARTCC26XX.h>
+#include <ti/drivers/Power.h>
+#include <ti/drivers/power/PowerCC26X2.h>
+#include <ti/devices/cc13x2_cc26x2/inc/hw_memmap.h>
+#include <ti/devices/cc13x2_cc26x2/inc/hw_ints.h>
 
-#define CONFIG_TIMER_COUNT 2
+#define CONFIG_UART_COUNT 1
 
-/*
- *  ======== timerCC26XXObjects ========
- */
-TimerCC26XX_Object timerCC26XXObjects[CONFIG_TIMER_COUNT];
+UARTCC26XX_Object uartCC26XXObjects[CONFIG_UART_COUNT];
 
-/*
- *  ======== timerCC26XXHWAttrs ========
- */
-const TimerCC26XX_HWAttrs timerCC26XXHWAttrs[CONFIG_TIMER_COUNT] = {
-    {
-        .gpTimerUnit = CONFIG_GPTIMER_0,
-        .subTimer    = TimerCC26XX_timer16A
+static unsigned char uartCC26XXRingBuffer0[32];
 
-    },
-    {
-        .gpTimerUnit = CONFIG_GPTIMER_1,
-        .subTimer    = TimerCC26XX_timer16A
+static const UARTCC26XX_HWAttrsV2 uartCC26XXHWAttrs[CONFIG_UART_COUNT] = {
+  {
+    .baseAddr           = UART0_BASE,
+    .intNum             = INT_UART0_COMB,
+    .intPriority        = (~0),
+    .swiPriority        = 0,
+    .powerMngrId        = PowerCC26XX_PERIPH_UART0,
+    .ringBufPtr         = uartCC26XXRingBuffer0,
+    .ringBufSize        = sizeof(uartCC26XXRingBuffer0),
+    .rxPin              = IOID_2,
+    .txPin              = IOID_3,
+    .ctsPin             = PIN_UNASSIGNED,
+    .rtsPin             = PIN_UNASSIGNED,
+    .txIntFifoThr       = UARTCC26XX_FIFO_THRESHOLD_1_8,
+    .rxIntFifoThr       = UARTCC26XX_FIFO_THRESHOLD_4_8,
+    .errorFxn           = NULL
+  },
+};
 
+const UART_Config UART_config[CONFIG_UART_COUNT] = {
+    {   /* CONFIG_UART_0 */
+        .fxnTablePtr = &UARTCC26XX_fxnTable,
+        .object      = &uartCC26XXObjects[CONFIG_UART_0],
+        .hwAttrs     = &uartCC26XXHWAttrs[CONFIG_UART_0]
     },
 };
 
-/*
- *  ======== Timer_config ========
- */
-const Timer_Config Timer_config[CONFIG_TIMER_COUNT] = {
-    /* timer0 */
-    {
-        .object    = &timerCC26XXObjects[timer0],
-        .hwAttrs   = &timerCC26XXHWAttrs[timer0]
-    },
-    /* timer1 */
-    {
-        .object    = &timerCC26XXObjects[timer1],
-        .hwAttrs   = &timerCC26XXHWAttrs[timer1]
-    },
-};
-
-const uint_least8_t timer0_CONST = timer0;
-const uint_least8_t timer1_CONST = timer1;
-const uint_least8_t Timer_count = CONFIG_TIMER_COUNT;
+const uint_least8_t CONFIG_UART_0_CONST = CONFIG_UART_0;
+const uint_least8_t UART_count = CONFIG_UART_COUNT;
 
 /*
  *  =============================== GPTimer ===============================
@@ -167,7 +210,7 @@ const uint_least8_t Timer_count = CONFIG_TIMER_COUNT;
 #include <ti/devices/cc13x2_cc26x2/inc/hw_memmap.h>
 #include <ti/devices/cc13x2_cc26x2/inc/hw_ints.h>
 
-#define CONFIG_GPTIMER_COUNT 2
+#define CONFIG_GPTIMER_COUNT 1
 
 /*
  *  ======== gptimerCC26XXObjects ========
@@ -178,15 +221,8 @@ GPTimerCC26XX_Object gptimerCC26XXObjects[CONFIG_GPTIMER_COUNT];
  *  ======== gptimerCC26XXHWAttrs ========
  */
 const GPTimerCC26XX_HWAttrs gptimerCC26XXHWAttrs[CONFIG_GPTIMER_COUNT] = {
-    /* CONFIG_GPTIMER_0, used by timer0 */
-    {
-        .baseAddr = GPT1_BASE,
-        .intNum      = INT_GPT1A,
-        .intPriority = (~0),
-        .powerMngrId = PowerCC26XX_PERIPH_GPT1,
-        .pinMux      = GPT_PIN_1A
-    },
-    /* CONFIG_GPTIMER_1, used by timer1 */
+    /* CONFIG_GPTIMER_2, used by CONFIG_PWM_0 */
+    /* LaunchPad LED Red */
     {
         .baseAddr = GPT0_BASE,
         .intNum      = INT_GPT0A,
@@ -200,22 +236,16 @@ const GPTimerCC26XX_HWAttrs gptimerCC26XXHWAttrs[CONFIG_GPTIMER_COUNT] = {
  *  ======== GPTimer_config ========
  */
 const GPTimerCC26XX_Config GPTimerCC26XX_config[CONFIG_GPTIMER_COUNT] = {
-    /* CONFIG_GPTIMER_0 */
+    /* CONFIG_GPTIMER_2 */
+    /* LaunchPad LED Red */
     {
-        .object    = &gptimerCC26XXObjects[CONFIG_GPTIMER_0],
-        .hwAttrs   = &gptimerCC26XXHWAttrs[CONFIG_GPTIMER_0],
-        .timerPart = GPT_A
-    },
-    /* CONFIG_GPTIMER_1 */
-    {
-        .object    = &gptimerCC26XXObjects[CONFIG_GPTIMER_1],
-        .hwAttrs   = &gptimerCC26XXHWAttrs[CONFIG_GPTIMER_1],
+        .object    = &gptimerCC26XXObjects[CONFIG_GPTIMER_2],
+        .hwAttrs   = &gptimerCC26XXHWAttrs[CONFIG_GPTIMER_2],
         .timerPart = GPT_A
     },
 };
 
-const uint_least8_t CONFIG_GPTIMER_0_CONST = CONFIG_GPTIMER_0;
-const uint_least8_t CONFIG_GPTIMER_1_CONST = CONFIG_GPTIMER_1;
+const uint_least8_t CONFIG_GPTIMER_2_CONST = CONFIG_GPTIMER_2;
 const uint_least8_t GPTimer_count = CONFIG_GPTIMER_COUNT;
 
 #include <stdbool.h>
