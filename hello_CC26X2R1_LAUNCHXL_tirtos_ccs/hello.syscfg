@@ -10,6 +10,8 @@
  */
 const Power   = scripting.addModule("/ti/drivers/Power");
 const RTOS    = scripting.addModule("/ti/drivers/RTOS");
+const Timer   = scripting.addModule("/ti/drivers/Timer", {}, false);
+const Timer1  = Timer.addInstance();
 const UART    = scripting.addModule("/ti/drivers/UART", {}, false);
 const UART1   = UART.addInstance();
 const Button  = scripting.addModule("/ti/drivers/apps/Button", {}, false);
@@ -22,6 +24,9 @@ const LED1    = LED.addInstance();
  */
 const CCFG              = scripting.addModule("/ti/devices/CCFG", {}, false);
 CCFG.ccfgTemplate.$name = "ti_devices_CCFGTemplate0";
+
+Timer1.$name               = "timer0";
+Timer1.timerInstance.$name = "CONFIG_GPTIMER_1";
 
 UART1.$name               = "CONFIG_UART_0";
 UART1.$hardware           = system.deviceData.board.components.XDS110UART;
@@ -46,9 +51,10 @@ LED1.pwmPin.timerObject.pwmPinInstance.$name = "CONFIG_PIN_0";
  * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
  * re-solve from scratch.
  */
+Timer1.timerInstance.timer.$suggestSolution           = "GPTM0";
 UART1.uart.$suggestSolution                           = "UART1";
 UART1.uart.txPin.$suggestSolution                     = "boosterpack.4";
 UART1.uart.rxPin.$suggestSolution                     = "boosterpack.3";
 Button1.gpioPin.gpioPin.$suggestSolution              = "boosterpack.13";
-LED1.pwmPin.timerObject.timer.$suggestSolution        = "GPTM0";
+LED1.pwmPin.timerObject.timer.$suggestSolution        = "GPTM1";
 LED1.pwmPin.timerObject.timer.pwmPin.$suggestSolution = "boosterpack.39";

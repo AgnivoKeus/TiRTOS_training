@@ -109,6 +109,11 @@ hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/GPIO.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/PWM.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/ClockP.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/apps/Button.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Timer.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/HwiP.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SemaphoreP.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Power.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/utils/List.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/UART.h
 hello.obj: syscfg/ti_drivers_config.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/DeviceFamily.h
@@ -419,6 +424,16 @@ C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/PWM.h:
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/ClockP.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/apps/Button.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Timer.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/HwiP.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SemaphoreP.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Power.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/utils/List.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/UART.h:
 

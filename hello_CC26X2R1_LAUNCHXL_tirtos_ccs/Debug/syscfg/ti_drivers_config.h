@@ -84,6 +84,15 @@ extern const uint_least8_t              LED0_PWM_CONST;
 
 
 /*
+ *  ======== Timer ========
+ */
+
+extern const uint_least8_t                  timer0_CONST;
+#define timer0                              0
+#define CONFIG_TI_DRIVERS_TIMER_COUNT       1
+
+
+/*
  *  ======== UART ========
  */
 
@@ -121,9 +130,11 @@ extern const uint_least8_t              LED0_CONST;
  *  ======== GPTimer ========
  */
 
+extern const uint_least8_t                  CONFIG_GPTIMER_1_CONST;
+#define CONFIG_GPTIMER_1                    0
 extern const uint_least8_t                  CONFIG_GPTIMER_0_CONST;
-#define CONFIG_GPTIMER_0                    0
-#define CONFIG_TI_DRIVERS_GPTIMER_COUNT     1
+#define CONFIG_GPTIMER_0                    1
+#define CONFIG_TI_DRIVERS_GPTIMER_COUNT     2
 
 
 /*

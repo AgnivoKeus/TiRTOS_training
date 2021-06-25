@@ -44,6 +44,7 @@
 #include <ti/drivers/Board.h>
 #include <ti/drivers/apps/LED.h>
 #include <ti/drivers/apps/Button.h>
+#include <ti/drivers/Timer.h>
 
 //#include<ti/drivers/GPIO.h>
 //#include<ti/drivers/PWM.h>
@@ -53,6 +54,7 @@
 #include <ti/sysbios/knl/Task.h>
 #include <ti/sysbios/knl/Semaphore.h>
 #include <ti/sysbios/knl/Event.h>
+
 //#include DeviceFamily_constructPath(driverlib/timer.h)
 
 /*
@@ -69,37 +71,51 @@ Event_Handle eventHandle;
 Event_Params eventParams;
 UInt events;
 #define UART_EVENT_MASK 0x01
-#define GPIO_EVENT_MASK 0x02
+//#define GPIO_EVENT_MASK 0x02
 
 LED_Handle ledHandle;
 LED_Params ledParams;
+uint8_t currentBrightness = 100;
+uint8_t finalBrightness = 100;
 
 Button_Handle buttonHandle;
 Button_Params buttonParams;
 
+Timer_Handle timerHandle;
+Timer_Params timerParams;
+#define TIMER_TRIGGERED 0x02
 
 char taskStack[512];
-uint8_t input = 0; //range between 0 - 100
-uint8_t pwmPrevVal = 0;
 
-void setLEDBrightness(uint8_t brightness){
 
+void setLEDBrightness(uint8_t inputIp){
+    int_fast16_t status = Timer_start(timerHandle);
+    if(status == Timer_STATUS_ERROR){
+        printf("Timer start error!\n");
+    }
 }
-void uartCallBack(UART_Handle handle, void *buf, size_t count){
 
-    printf("UART callback\n");
-    input = *((uint8_t *)buf);
+void uartCallBack(UART_Handle handle, void *buf, size_t count){
+    finalBrightness = *((uint8_t *)buf);
     Event_post(eventHandle, UART_EVENT_MASK);
 }
 
 //global gpioState
 void buttonCallback(Button_Handle buttonHandle,
                     Button_EventMask buttonEvents){
-    printf("GPIO callback!\n");
-//    Semaphore_post(semHandle);
-    Event_post(eventHandle, GPIO_EVENT_MASK);
-    // gpioState
+    Event_post(eventHandle, buttonEvents);
 }
+
+void timerCallBack(Timer_Handle handle, int_fast16_t status){
+    if(currentBrightness == finalBrightness){
+        Timer_stop(timerHandle);
+        return;
+    }
+    if(currentBrightness > finalBrightness) currentBrightness--;
+    else currentBrightness++;
+    LED_setBrightnessLevel(ledHandle, currentBrightness);
+}
+
 
 void UARTinit(){
     UART_init();
@@ -110,7 +126,6 @@ void UARTinit(){
     uartParams.readReturnMode = UART_RETURN_FULL;
     uartParams.readMode = UART_MODE_CALLBACK;
     uartParams.readCallback = uartCallBack;
-//    uartParams.readMode = UART_MODE_BLOCKING;
 
     uartHandle = UART_open(CONFIG_UART_0, &uartParams);
     if(uartHandle == NULL){
@@ -122,33 +137,48 @@ void UARTinit(){
 void LEDInit(){
     LED_init();
     LED_Params_init(&ledParams);
-    input = 100;
     ledParams.pwmPeriod = 1000;
     ledHandle = LED_open(LED0, &ledParams);
     if(ledHandle == NULL){
         printf("Failed to initialise LED!\n");
         while(1){}
     }
-    LED_setBrightnessLevel(ledHandle, input);
+    LED_setBrightnessLevel(ledHandle, finalBrightness);
 }
 
 void ButtonInit(){
     Button_init();
     Button_Params_init(&buttonParams);
-    buttonParams.buttonEventMask = Button_EV_PRESSED;
+    buttonParams.buttonEventMask = Button_EV_CLICKED | Button_EV_DOUBLECLICKED;
+
     buttonHandle = Button_open(BUTTON0, buttonCallback, &buttonParams);
     if(buttonHandle == NULL){
         printf("Failed to open button.\n");
         while(1){}
     }
 }
+
+void TimerInit(){
+    Timer_init();
+    Timer_Params_init(&timerParams);
+    timerParams.periodUnits = Timer_PERIOD_US;
+    timerParams.period = 100000;
+    timerParams.timerCallback = &timerCallBack;
+    timerParams.timerMode = Timer_CONTINUOUS_CALLBACK;
+
+    timerHandle = Timer_open(timer0, &timerParams);
+    if(timerHandle == NULL){
+        printf("Error opening timer\n");
+        while(1){}
+    }
+}
+
 void myTaskFxn(xdc_UArg arg1, xdc_UArg arg2){
-    printf("Task started\n");
     LEDInit();
     UARTinit();
     ButtonInit();
+    TimerInit();
 
-    //Create event
     Event_Params_init(&eventParams);
     eventHandle = Event_create(&eventParams, NULL);
     if(eventHandle == NULL){
@@ -165,22 +195,22 @@ void myTaskFxn(xdc_UArg arg1, xdc_UArg arg2){
     while(1){
 
         //pend on semaphore
-        UART_read(uartHandle, &input, 1);
-        events = Event_pend(eventHandle,Event_Id_NONE, (UART_EVENT_MASK | GPIO_EVENT_MASK), BIOS_WAIT_FOREVER);
+        UART_read(uartHandle, &finalBrightness, 1);
+        events = Event_pend(eventHandle,Event_Id_NONE, (UART_EVENT_MASK |
+                Button_EV_CLICKED | Button_EV_DOUBLECLICKED), BIOS_WAIT_FOREVER);
 
         if(events & UART_EVENT_MASK){
-            LED_setBrightnessLevel(ledHandle, input);
+            setLEDBrightness(finalBrightness);
         }
-        else {
-            if(input!=0){ //if pwm!= 0, set to zero
-                    pwmPrevVal = input;
-                    input = 0;
-                    LED_setBrightnessLevel(ledHandle, input);
-                }
-                else{ //if zero, then restore previous value
-                    input = pwmPrevVal;
-                    LED_setBrightnessLevel(ledHandle, input);
-                }
+        else if(events & Button_EV_CLICKED){ //if single clicked
+                //SET gpio brightness to 0
+                finalBrightness = 0;
+                setLEDBrightness(finalBrightness);
+            }
+        else if(events & Button_EV_DOUBLECLICKED){ //if zero, then restore previous value
+            //set LED brightness to MAX
+            finalBrightness = 100;
+            setLEDBrightness(finalBrightness);
         }
     }
 }

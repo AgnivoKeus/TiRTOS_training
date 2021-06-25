@@ -47,13 +47,15 @@ syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/ClockP.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/power/PowerCC26XX.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Temperature.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Timer.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SemaphoreP.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/timer/TimerCC26XX.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/UART.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/uart/UARTCC26XX.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/utils/RingBuf.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/driverlib/uart.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/inc/hw_uart.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SwiP.h
-syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SemaphoreP.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/apps/Button.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/apps/LED.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Board.h
@@ -152,6 +154,12 @@ C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/power/PowerCC26XX.
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Temperature.h:
 
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Timer.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SemaphoreP.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/timer/TimerCC26XX.h:
+
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/UART.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/uart/UARTCC26XX.h:
@@ -163,8 +171,6 @@ C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/driv
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/inc/hw_uart.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SwiP.h:
-
-C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SemaphoreP.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/apps/Button.h:
 

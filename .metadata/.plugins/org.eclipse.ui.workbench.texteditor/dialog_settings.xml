@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="Semaphore_Params"/>
+		<item key="selection" value="Timer started"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="timer started"/>
+			<item value="tempBrightness4"/>
+			<item value="tempBrightness"/>
+			<item value="brightness"/>
 			<item value="semaphore_params"/>
 			<item value="semaphore_param"/>
 			<item value="params"/>
@@ -19,12 +23,9 @@
 			<item value="idle"/>
 			<item value="ti_sysbios_BIOS_start__E"/>
 			<item value="ti_sysbios_BIOS_start"/>
-			<item value="UART_ReadFxn"/>
-			<item value="readPollingFxn"/>
-			<item value="Handle"/>
-			<item value="workTaskStack"/>
 		</list>
 		<list key="replacehistory">
+			<item value="currentBrightness"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
