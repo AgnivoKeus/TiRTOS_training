@@ -15,4 +15,5 @@
 	<templateProperties value="id=hello_CC26X2R1_LAUNCHXL_tirtos_ccs.projectspec.hello_CC26X2R1_LAUNCHXL_tirtos_ccs,type=rtsc,xdcToolsVersion=3_62_00_08_core,target=ti.targets.arm.elf.M4F,platform=ti.platforms.simplelink:CC13X2_CC26X2,buildProfile=release,isHybrid=true,configuroOptions= --compileOptions &quot;${COMPILER_FLAGS} &quot;"/>
 	<origin value="C:\ti\simplelink_cc13x2_26x2_sdk_5_10_00_48\examples\rtos\CC26X2R1_LAUNCHXL\sysbios\hello\tirtos\ccs\hello_CC26X2R1_LAUNCHXL_tirtos_ccs.projectspec"/>
 	<filesToOpen value=""/>
+	<isTargetManual value="false"/>
 </projectOptions>

@@ -103,13 +103,16 @@ hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/IGateProv
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/BIOS__epilogue.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/package/BIOS_RtsGateProxy.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Board.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/apps/LED.h
+hello.obj: C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdbool.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/GPIO.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/PWM.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/ClockP.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/apps/Button.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/UART.h
 hello.obj: syscfg/ti_drivers_config.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/DeviceFamily.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/PIN.h
-hello.obj: C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdbool.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Task.h
 hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/Types.h
 hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/IInstance.h
@@ -197,6 +200,7 @@ hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Task.h
 hello.obj: C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/IModule.h
 hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Event__epilogue.h
+hello.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Event.h
 
 ../hello.c:
 
@@ -404,9 +408,17 @@ C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/pa
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Board.h:
 
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/apps/LED.h:
+
+C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdbool.h:
+
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/GPIO.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/PWM.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/ClockP.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/apps/Button.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/UART.h:
 
@@ -415,8 +427,6 @@ syscfg/ti_drivers_config.h:
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/DeviceFamily.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/PIN.h:
-
-C:/ti/ccs1031/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdbool.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Task.h:
 
@@ -591,4 +601,6 @@ C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/kn
 C:/ti/ccs1031/xdctools_3_62_00_08_core/packages/xdc/runtime/IModule.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Event__epilogue.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/kernel/tirtos/packages/ti/sysbios/knl/Event.h:
 

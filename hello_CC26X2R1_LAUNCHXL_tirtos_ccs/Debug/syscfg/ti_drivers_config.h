@@ -43,8 +43,8 @@ extern "C" {
  */
 
 /* DIO13, LaunchPad Button BTN-1 (Left) */
-extern const uint_least8_t              BUTTON0_CONST;
-#define BUTTON0                         0
+extern const uint_least8_t              CONFIG_GPIO_0_CONST;
+#define CONFIG_GPIO_0                   0
 #define CONFIG_TI_DRIVERS_GPIO_COUNT    1
 
 /* LEDs are active high */
@@ -62,13 +62,13 @@ extern const uint_least8_t              BUTTON0_CONST;
 
 extern const PIN_Config BoardGpioInitTable[];
 
-/* LaunchPad Button BTN-1 (Left), Parent Signal: BUTTON0 GPIO Pin, (DIO13) */
-#define CONFIG_PIN_3                   0x0000000d
 /* XDS110 UART, Parent Signal: CONFIG_UART_0 TX, (DIO3) */
 #define CONFIG_PIN_1                   0x00000003
 /* XDS110 UART, Parent Signal: CONFIG_UART_0 RX, (DIO2) */
 #define CONFIG_PIN_2                   0x00000002
-/* LaunchPad LED Red, Parent Signal: CONFIG_GPTIMER_2 PWM Pin, (DIO6) */
+/* LaunchPad Button BTN-1 (Left), Parent Signal: CONFIG_GPIO_0 GPIO Pin, (DIO13) */
+#define CONFIG_PIN_3                   0x0000000d
+/* LaunchPad LED Red, Parent Signal: CONFIG_GPTIMER_0 PWM Pin, (DIO6) */
 #define CONFIG_PIN_0                   0x00000006
 #define CONFIG_TI_DRIVERS_PIN_COUNT    4
 
@@ -78,8 +78,8 @@ extern const PIN_Config BoardGpioInitTable[];
  */
 
 /* DIO6, LaunchPad LED Red */
-extern const uint_least8_t              CONFIG_PWM_0_CONST;
-#define CONFIG_PWM_0                    0
+extern const uint_least8_t              LED0_PWM_CONST;
+#define LED0_PWM                        0
 #define CONFIG_TI_DRIVERS_PWM_COUNT     1
 
 
@@ -98,11 +98,31 @@ extern const uint_least8_t              CONFIG_UART_0_CONST;
 
 
 /*
+ *  ======== Button ========
+ */
+
+/* DIO13, LaunchPad Button BTN-1 (Left) */
+extern const uint_least8_t                  BUTTON0_CONST;
+#define BUTTON0                             0
+#define CONFIG_TI_DRIVERS_BUTTON_COUNT      1
+
+
+/*
+ *  ======== LED ========
+ */
+
+/* DIO6, LaunchPad LED Red */
+extern const uint_least8_t              LED0_CONST;
+#define LED0                            0
+#define CONFIG_TI_DRIVERS_LED_COUNT     1
+
+
+/*
  *  ======== GPTimer ========
  */
 
-extern const uint_least8_t                  CONFIG_GPTIMER_2_CONST;
-#define CONFIG_GPTIMER_2                    0
+extern const uint_least8_t                  CONFIG_GPTIMER_0_CONST;
+#define CONFIG_GPTIMER_0                    0
 #define CONFIG_TI_DRIVERS_GPTIMER_COUNT     1
 
 

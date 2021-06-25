@@ -42,22 +42,22 @@
 #include <ti/sysbios/BIOS.h>
 
 #include <ti/drivers/Board.h>
-#include<ti/drivers/GPIO.h>
-#include<ti/drivers/PWM.h>
+#include <ti/drivers/apps/LED.h>
+#include <ti/drivers/apps/Button.h>
+
+//#include<ti/drivers/GPIO.h>
+//#include<ti/drivers/PWM.h>
 #include <ti/drivers/UART.h>
 
 #include"ti_drivers_config.h"
 #include <ti/sysbios/knl/Task.h>
 #include <ti/sysbios/knl/Semaphore.h>
+#include <ti/sysbios/knl/Event.h>
 //#include DeviceFamily_constructPath(driverlib/timer.h)
 
 /*
  *  ======== main ========
  */
-
-
-PWM_Handle pwmHandle;
-PWM_Params pwmParams;
 
 UART_Handle uartHandle;
 UART_Params uartParams;
@@ -65,38 +65,42 @@ UART_Params uartParams;
 Task_Params taskParams;
 Task_Handle taskHandle;
 
-Semaphore_Handle semHandle;
-Semaphore_Params semParams;
+Event_Handle eventHandle;
+Event_Params eventParams;
+UInt events;
+#define UART_EVENT_MASK 0x01
+#define GPIO_EVENT_MASK 0x02
+
+LED_Handle ledHandle;
+LED_Params ledParams;
+
+Button_Handle buttonHandle;
+Button_Params buttonParams;
+
 
 char taskStack[512];
-uint8_t input = 0;
+uint8_t input = 0; //range between 0 - 100
 uint8_t pwmPrevVal = 0;
 
-void uartWriteCallBack(UART_Handle handle, void *buf, size_t count){
-    UART_read(uartHandle, &input, 1);
+void setLEDBrightness(uint8_t brightness){
+
 }
 void uartCallBack(UART_Handle handle, void *buf, size_t count){
 
-    printf("Callback called\n");
-//    const char echoBuffer[] = "Hello from callback";
-//    UART_write(handle, echoBuffer, sizeof(echoBuffer));
-    UART_write(handle, buf, 1);
-//    uint8_t val = *((uint8_t *)buf);
-//    size_t bytesWritten;
-//    printf("received value: %hu\n", val);
-//    PWM_setDuty(userArg, val);
-//
-//    UART2_write(handle, buf, count, &bytesWritten);
+    printf("UART callback\n");
+    input = *((uint8_t *)buf);
+    Event_post(eventHandle, UART_EVENT_MASK);
 }
 
 //global gpioState
-void gpioCallBackFxn(uint_least8_t index){
+void buttonCallback(Button_Handle buttonHandle,
+                    Button_EventMask buttonEvents){
     printf("GPIO callback!\n");
-    Semaphore_post(semHandle);
-
+//    Semaphore_post(semHandle);
+    Event_post(eventHandle, GPIO_EVENT_MASK);
     // gpioState
-
 }
+
 void UARTinit(){
     UART_init();
     UART_Params_init(&uartParams);
@@ -104,7 +108,8 @@ void UARTinit(){
     uartParams.readDataMode = UART_DATA_BINARY;
     uartParams.writeDataMode = UART_DATA_BINARY;
     uartParams.readReturnMode = UART_RETURN_FULL;
-
+    uartParams.readMode = UART_MODE_CALLBACK;
+    uartParams.readCallback = uartCallBack;
 //    uartParams.readMode = UART_MODE_BLOCKING;
 
     uartHandle = UART_open(CONFIG_UART_0, &uartParams);
@@ -114,50 +119,42 @@ void UARTinit(){
     }
 }
 
-void PWMinit(){
-    PWM_init();
-    PWM_Params_init(&pwmParams);
-    pwmParams.dutyValue = 0;
-    pwmParams.dutyUnits = PWM_DUTY_FRACTION;
-    pwmParams.periodUnits = PWM_PERIOD_US;
-    pwmParams.periodValue = 30000;
-    pwmParams.idleLevel = PWM_IDLE_LOW;
-
-    pwmHandle = PWM_open(CONFIG_PWM_0, &pwmParams);
-    if(pwmHandle == NULL){
-        printf("Error opening PWM o/p\n");
+void LEDInit(){
+    LED_init();
+    LED_Params_init(&ledParams);
+    input = 100;
+    ledParams.pwmPeriod = 1000;
+    ledHandle = LED_open(LED0, &ledParams);
+    if(ledHandle == NULL){
+        printf("Failed to initialise LED!\n");
         while(1){}
     }
-    PWM_start(pwmHandle);
+    LED_setBrightnessLevel(ledHandle, input);
 }
 
-void GPIOinit(){
-    GPIO_init();
-    GPIO_setCallback(BUTTON0,gpioCallBackFxn);
-    GPIO_enableInt(BUTTON0);
-
+void ButtonInit(){
+    Button_init();
+    Button_Params_init(&buttonParams);
+    buttonParams.buttonEventMask = Button_EV_PRESSED;
+    buttonHandle = Button_open(BUTTON0, buttonCallback, &buttonParams);
+    if(buttonHandle == NULL){
+        printf("Failed to open button.\n");
+        while(1){}
+    }
 }
 void myTaskFxn(xdc_UArg arg1, xdc_UArg arg2){
     printf("Task started\n");
-    PWMinit();
+    LEDInit();
     UARTinit();
-    GPIOinit();
+    ButtonInit();
 
-    //create semaphore counting
-
-    Semaphore_Params_init(&semParams);
-    semParams.mode = ti_sysbios_knl_Semaphore_Mode_COUNTING;
-    semParams.event = NULL;
-
-    semHandle = Semaphore_create(0, &semParams, NULL);
-
-//    appSemHandle = Semaphore_handle(&appSem);
-
-//    appServiceTaskId = OsalPort_registerTask(Task_self(), appSemHandle,
-//                                            &appServiceTaskEvents);
-
-//    Semaphore_create(1, &semParams, NULL);
-
+    //Create event
+    Event_Params_init(&eventParams);
+    eventHandle = Event_create(&eventParams, NULL);
+    if(eventHandle == NULL){
+        printf("Failed to create event!\n");
+        while(1){}
+    }
     //create an eventMask with different bits for different action
    /*
     * 0x01 -> read uart
@@ -165,46 +162,31 @@ void myTaskFxn(xdc_UArg arg1, xdc_UArg arg2){
     * 0x04 -> update pwm
     * 0x08 -> gpio toggle
     * */
-
-    input = 80;
-    PWM_setDuty(pwmHandle, (uint32_t) (((uint64_t) PWM_DUTY_FRACTION_MAX * input / 100)));
-
     while(1){
 
         //pend on semaphore
+        UART_read(uartHandle, &input, 1);
+        events = Event_pend(eventHandle,Event_Id_NONE, (UART_EVENT_MASK | GPIO_EVENT_MASK), BIOS_WAIT_FOREVER);
 
-        //if(events & 0x01)
-        // readuart
-        //
-
-//        UART_read(uartHandle, &input, 1);
-//        UART_write(uartHandle, &input, 1);
-
-        Semaphore_pend(semHandle, BIOS_WAIT_FOREVER);
-        if(input!=0){ //if pem!= 0, set to zero
-                pwmPrevVal = input;
-
-                UART_write(uartHandle, &input, 1);
-        //        UART_write(uartHandle, '\n', 1);
-                UART_write(uartHandle, &pwmPrevVal, 1);
-
-                input = 0;
-                PWM_setDuty(pwmHandle, (uint32_t) (((uint64_t) PWM_DUTY_FRACTION_MAX * input / 100)));
-            }
-            else{ //if zero, then restore previous value
-                UART_write(uartHandle, &input, 1);
-        //        UART_write(uartHandle, '\n', 1);
-                UART_write(uartHandle, &pwmPrevVal, 1);
-
-                input = pwmPrevVal;
-                PWM_setDuty(pwmHandle, (uint32_t) (((uint64_t) PWM_DUTY_FRACTION_MAX * input / 100)));
-            }
-//        Semaphore_post(semHandle);
+        if(events & UART_EVENT_MASK){
+            LED_setBrightnessLevel(ledHandle, input);
+        }
+        else {
+            if(input!=0){ //if pwm!= 0, set to zero
+                    pwmPrevVal = input;
+                    input = 0;
+                    LED_setBrightnessLevel(ledHandle, input);
+                }
+                else{ //if zero, then restore previous value
+                    input = pwmPrevVal;
+                    LED_setBrightnessLevel(ledHandle, input);
+                }
+        }
     }
 }
 
 int main()
-    {
+{
     /* Call driver init functions */
     Board_init();
 

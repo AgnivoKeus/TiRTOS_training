@@ -54,6 +54,8 @@ syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/inc/hw_uart.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SwiP.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SemaphoreP.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/apps/Button.h
+syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/apps/LED.h
 syscfg/ti_drivers_config.obj: C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Board.h
 
 syscfg/ti_drivers_config.c:
@@ -163,6 +165,10 @@ C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/devices/cc13x2_cc26x2/inc/
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SwiP.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/dpl/SemaphoreP.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/apps/Button.h:
+
+C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/apps/LED.h:
 
 C:/ti/simplelink_cc13x2_26x2_sdk_5_10_00_48/source/ti/drivers/Board.h:
 

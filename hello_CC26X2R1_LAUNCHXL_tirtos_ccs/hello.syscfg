@@ -8,29 +8,18 @@
 /**
  * Import the modules used in this configuration.
  */
-const GPIO  = scripting.addModule("/ti/drivers/GPIO", {}, false);
-const GPIO1 = GPIO.addInstance();
-const PWM   = scripting.addModule("/ti/drivers/PWM", {}, false);
-const PWM1  = PWM.addInstance();
-const Power = scripting.addModule("/ti/drivers/Power");
-const RTOS  = scripting.addModule("/ti/drivers/RTOS");
-const UART  = scripting.addModule("/ti/drivers/UART", {}, false);
-const UART1 = UART.addInstance();
+const Power   = scripting.addModule("/ti/drivers/Power");
+const RTOS    = scripting.addModule("/ti/drivers/RTOS");
+const UART    = scripting.addModule("/ti/drivers/UART", {}, false);
+const UART1   = UART.addInstance();
+const Button  = scripting.addModule("/ti/drivers/apps/Button", {}, false);
+const Button1 = Button.addInstance();
+const LED     = scripting.addModule("/ti/drivers/apps/LED", {}, false);
+const LED1    = LED.addInstance();
 
 /**
  * Write custom configuration values to the imported modules.
  */
-GPIO1.$hardware         = system.deviceData.board.components["BTN-1"];
-GPIO1.$name             = "BUTTON0";
-GPIO1.pinInstance.$name = "CONFIG_PIN_3";
-GPIO1.gpioPin.$assign   = "boosterpack.13";
-
-PWM1.$name                            = "CONFIG_PWM_0";
-PWM1.$hardware                        = system.deviceData.board.components.LED_RED;
-PWM1.timerObject.$name                = "CONFIG_GPTIMER_2";
-PWM1.timerObject.timer.pwmPin.$assign = "boosterpack.39";
-PWM1.timerObject.pwmPinInstance.$name = "CONFIG_PIN_0";
-
 const CCFG              = scripting.addModule("/ti/devices/CCFG", {}, false);
 CCFG.ccfgTemplate.$name = "ti_devices_CCFGTemplate0";
 
@@ -39,12 +28,27 @@ UART1.$hardware           = system.deviceData.board.components.XDS110UART;
 UART1.txPinInstance.$name = "CONFIG_PIN_1";
 UART1.rxPinInstance.$name = "CONFIG_PIN_2";
 
+Button1.$name                     = "BUTTON0";
+Button1.$hardware                 = system.deviceData.board.components["BTN-1"];
+Button1.gpioPin.$name             = "CONFIG_GPIO_0";
+Button1.gpioPin.mode              = scripting.forceWrite("Input");
+Button1.gpioPin.callbackFunction  = "buttonCallback";
+Button1.gpioPin.pinInstance.$name = "CONFIG_PIN_3";
+
+LED1.$hardware                               = system.deviceData.board.components.LED_RED;
+LED1.dimmable                                = true;
+LED1.$name                                   = "LED0";
+LED1.pwmPin.timerObject.$name                = "CONFIG_GPTIMER_0";
+LED1.pwmPin.timerObject.pwmPinInstance.$name = "CONFIG_PIN_0";
+
 /**
  * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
  * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
  * re-solve from scratch.
  */
-PWM1.timerObject.timer.$suggestSolution = "GPTM0";
-UART1.uart.$suggestSolution             = "UART0";
-UART1.uart.txPin.$suggestSolution       = "boosterpack.4";
-UART1.uart.rxPin.$suggestSolution       = "boosterpack.3";
+UART1.uart.$suggestSolution                           = "UART1";
+UART1.uart.txPin.$suggestSolution                     = "boosterpack.4";
+UART1.uart.rxPin.$suggestSolution                     = "boosterpack.3";
+Button1.gpioPin.gpioPin.$suggestSolution              = "boosterpack.13";
+LED1.pwmPin.timerObject.timer.$suggestSolution        = "GPTM0";
+LED1.pwmPin.timerObject.timer.pwmPin.$suggestSolution = "boosterpack.39";
